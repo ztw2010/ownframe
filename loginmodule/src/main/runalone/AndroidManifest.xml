@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.ebest.module.loginmodule">
+
+    <application
+        android:name=".runalone.application.IApplication"
+        android:allowBackup="true"
+        android:label="@string/loginmodule_app_name"
+        android:supportsRtl="true"
+        tools:replace="android:label">
+        <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".LoginSecondActivity"></activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,1 @@
+include ':app', ':gradle-src', ':componentservice', ':basiclib', ':basicres', ':loginmodule', ':annomationapilib', ':annomationlib', ':annomationcompilelib'
