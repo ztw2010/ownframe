@@ -8,8 +8,6 @@ import com.ebest.frame.commnetservicve.loginmoduleservice.IFragmentService;
 import com.ebest.frame.loginmodule.RouterRuleCreator;
 import com.ebest.module.loginmodule.serviceimpl.IFragmenImpl;
 
-import java.util.concurrent.ThreadPoolExecutor;
-
 /**
  * Created by ztw on 2017/9/22.
  */

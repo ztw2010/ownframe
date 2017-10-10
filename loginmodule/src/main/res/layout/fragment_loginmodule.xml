@@ -16,5 +16,4 @@
         android:text="点击初始化下载表数据"
         android:layout_width="match_parent"
         android:layout_height="60dp" />
-
 </LinearLayout>

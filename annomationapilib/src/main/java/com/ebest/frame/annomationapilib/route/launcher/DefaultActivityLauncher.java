@@ -33,7 +33,7 @@ public class DefaultActivityLauncher extends ActivityLauncher{
 
     @Override
     public void open(android.support.v4.app.Fragment fragment) throws Exception {
-        Intent intent = createIntent(fragment.getActivity());
+        Intent intent = createIntent(fragment.getContext());
         fragment.startActivityForResult(intent, extras.getRequestCode());
         overridePendingTransition(fragment.getActivity(), extras);
     }
