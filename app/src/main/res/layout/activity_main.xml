@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:text="路由demo"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/go_login_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="路由Open打开其他模块URI携带简单参数"/>
+
+        <Button
+            android:id="@+id/multi_login_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="获取Route对象.并添加额外数据"/>
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></FrameLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/toBundleCommon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="普通数据注入到bundle" />
+
+        <Button
+            android:id="@+id/toBundleConverter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="使用转换器注入到bundle" />
+
+        <Button
+            android:id="@+id/toEntityConverter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="使用转换器注入到实体类" />
+
+        <Button
+            android:id="@+id/toBundleActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="跳转到BundleActivity" />
+
+        <Button
+            android:id="@+id/toBundleWithArrayList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="注入各种类型的ArrayList" />
+
+        <Button
+            android:id="@+id/toBundleWithSpareArray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="注入SpareArray" />
+
+
+        <Button
+            android:id="@+id/route_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="路由跳转自己Module内其他的Activity" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
+

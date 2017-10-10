@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/annomationapilib/annomationapilib.iml" filepath="$PROJECT_DIR$/annomationapilib/annomationapilib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/annomationcompilelib/annomationcompilelib.iml" filepath="$PROJECT_DIR$/annomationcompilelib/annomationcompilelib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/annomationlib/annomationlib.iml" filepath="$PROJECT_DIR$/annomationlib/annomationlib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/basiclib/basiclib.iml" filepath="$PROJECT_DIR$/basiclib/basiclib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/basicres/basicres.iml" filepath="$PROJECT_DIR$/basicres/basicres.iml" />
+      <module fileurl="file://$PROJECT_DIR$/componentservice/componentservice.iml" filepath="$PROJECT_DIR$/componentservice/componentservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ebestframe.iml" filepath="$PROJECT_DIR$/ebestframe.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gradle-src/gradle-src.iml" filepath="$PROJECT_DIR$/gradle-src/gradle-src.iml" />
+      <module fileurl="file://$PROJECT_DIR$/loginmodule/loginmodule.iml" filepath="$PROJECT_DIR$/loginmodule/loginmodule.iml" />
+    </modules>
+  </component>
+</project>
