@@ -1,5 +1,6 @@
 package com.ebest.frame;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.ebest.frame.annomationapilib.aop.Permission;
 import com.ebest.frame.annomationapilib.parama.BundleFactory;
 import com.ebest.frame.annomationapilib.parama.Parceler;
 import com.ebest.frame.annomationapilib.route.Router;
@@ -59,7 +61,7 @@ public class MainActivity extends BaseActivity {
         super.onClick(view);
         switch (view.getId()){
             case R.id.go_login_tv:
-                Router.create("loginmodule://main/LoginActivity?username=ztw2010&address=徐汇区").open(this);
+                gotoOtherModule();
                 break;
             case R.id.multi_login_tv:
                 Bundle extras = new Bundle();
@@ -75,6 +77,11 @@ public class MainActivity extends BaseActivity {
                         .open(this);
                 break;
         }
+    }
+
+    @Permission(Manifest.permission.CAMERA)
+    private void gotoOtherModule(){
+        Router.create("loginmodule://main/LoginActivity?username=ztw2010&address=徐汇区").open(this);
     }
 
     private void showFragment(){
@@ -102,7 +109,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @SuppressWarnings("UnnecessaryBoxing")
     @OnClick(R.id.toBundleCommon)
     void toBundleCommonClick() {
         Bundle bundle = Parceler.toBundle(new BundleInfo(), new Bundle());

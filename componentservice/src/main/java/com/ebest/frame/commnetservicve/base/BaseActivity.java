@@ -2,6 +2,7 @@ package com.ebest.frame.commnetservicve.base;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
@@ -9,6 +10,7 @@ import com.ebest.frame.annomationapilib.parama.Parceler;
 import com.ebest.frame.annomationlib.parama.annomation.Arg;
 import com.ebest.frame.annomationlib.parama.annomation.Converter;
 import com.ebest.frame.annomationlib.parama.annomation.FastJsonConverter;
+import com.ebest.frame.baselib.util.MPermissionUtils;
 
 import butterknife.ButterKnife;
 
@@ -56,5 +58,11 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     @Override
     public void onClick(View view) {
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        MPermissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

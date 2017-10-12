@@ -1,4 +1,6 @@
-apply plugin: 'com.ebest.gradle.plugin'
+import com.ebest.frame.gradlesrc.aop.AspectjPlugin
+
+apply plugin: 'com.ebest.gradle.component.plugin'
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -29,3 +31,5 @@ combuild {
     applicatonName = 'com.ebest.frame.application.IApplication'
     isRegisterCompoAuto = true
 }
+
+apply plugin: AspectjPlugin

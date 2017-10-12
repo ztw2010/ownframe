@@ -1,9 +1,12 @@
 package com.ebest.frame.application;
 
+import android.app.Activity;
 import android.app.Application;
+import android.os.Bundle;
 import android.os.Environment;
 
 import com.ebest.frame.annomationapilib.route.RouterConfiguration;
+import com.ebest.frame.baselib.activitymanager.ActivityStackManager;
 import com.ebest.frame.baselib.excutor.SmartExecutor;
 import com.ebest.frame.baselib.greendao.base.DaoManager;
 import com.ebest.frame.baselib.greendao.base.MobileBeanFactory;
@@ -31,9 +34,10 @@ public class IApplication extends Application {
         initOkHttp();
         initExcutor();
         initBeanFactory();
+        initActivityStack();
     }
 
-    private void initDB(){
+    private void initDB() {
         File dbFile = new File(Environment.getExternalStorageDirectory().getPath() + "/ebest.db");
         if (!dbFile.exists()) {
             try {
@@ -47,7 +51,7 @@ public class IApplication extends Application {
         daoManager.init(getApplicationContext(), dbFile.getAbsolutePath());
     }
 
-    private void initOkHttp(){
+    private void initOkHttp() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //全局的读取超时时间
         builder.readTimeout(OkGo.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);
@@ -63,13 +67,52 @@ public class IApplication extends Application {
         RouterConfiguration.get().addRouteCreator(new RouterRuleCreator());
     }
 
-    private void initExcutor(){
+    private void initExcutor() {
         SmartExecutor smartExecutor = SmartExecutor.getInstance();
         smartExecutor.init();
         smartExecutor.setDebug(true);
     }
 
-    private void initBeanFactory(){
+    private void initBeanFactory() {
         MobileBeanFactory.getInstance().initAdvanceBeans();
+    }
+
+    private void initActivityStack() {
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                ActivityStackManager.getInstance().pushActivity(activity);
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                ActivityStackManager.getInstance().popActivity(activity);
+            }
+        });
     }
 }

@@ -12,17 +12,18 @@ public class CommonBuild implements Plugin<Project> {
 
     @Override
     public void apply(Project project) {
+        final def log = project.logger
         project.extensions.create('combuild', CommonExtension)
 
         String taskNames = project.gradle.startParameter.taskNames.toString()
-        System.out.println("taskNames is " + taskNames);
+        log.error "taskNames is " + taskNames;
         String module = project.path.replace(":", "")
-        System.out.println("current module is " + module);
+        log.error "current module is " + module;
         AssembleTask assembleTask = getTaskInfo(project.gradle.startParameter.taskNames)
 
         if (assembleTask.isAssemble) {
             fetchMainmodulename(project, assembleTask);
-            System.out.println("compilemodule  is " + compilemodule);
+            log.error "compilemodule  is " + compilemodule;
         }
 
         if (!project.hasProperty("isRunAlone")) {
@@ -56,14 +57,14 @@ public class CommonBuild implements Plugin<Project> {
                     }
                 }
             }
-            System.out.println("apply plugin is " + 'com.android.application');
+            log.error "apply plugin is " + 'com.android.application';
             if (assembleTask.isAssemble && module.equals(compilemodule)) {
                 compileComponents(assembleTask, project)
                 project.android.registerTransform(new ComCodeTransform(project))
             }
         } else {
             project.apply plugin: 'com.android.library'
-            System.out.println("apply plugin is " + 'com.android.library');
+            log.error "apply plugin is " + 'com.android.library';
             project.afterEvaluate {
                 Task assembleReleaseTask = project.tasks.findByPath("assembleRelease")
                 if (assembleReleaseTask != null) {
@@ -78,7 +79,7 @@ public class CommonBuild implements Plugin<Project> {
                                 String fileName -> desFile.name
                             }
                         }
-                        System.out.println("$module-release.aar copy success ");
+                        log.error "$module-release.aar copy success ";
                     }
                 }
             }
