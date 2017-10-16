@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
+import com.ebest.frame.baselib.constant.C;
 import com.ebest.frame.baselib.greendao.base.MobileBeanFactory;
 import com.ebest.frame.baselib.greendao.dbmanager.FormDaoManager;
 import com.ebest.frame.baselib.greendao.dbmanager.MeasureDaoManager;
@@ -32,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class LoginModuleFragment extends BaseFragment<LoginModel, LoginPresenter> implements View.OnClickListener, LoginContract.View {
 
-    private Button insertDbBtn;
+    private Button insertDbBtn, downFileBtn;
 
     private final String TAG = "LoginModuleFragment";
 
@@ -98,6 +99,8 @@ public class LoginModuleFragment extends BaseFragment<LoginModel, LoginPresenter
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setCancelable(false);
+        downFileBtn = (Button) rootView.findViewById(R.id.down_file);
+        downFileBtn.setOnClickListener(this);
     }
 
     @Override
@@ -121,6 +124,8 @@ public class LoginModuleFragment extends BaseFragment<LoginModel, LoginPresenter
         if (R.id.insert_db == id) {
             initDownLoadTable();
             mPresenter.getDownLoadTableData(tables);
+        } else if (R.id.down_file == id) {
+            mPresenter.downFile(C.FILE_URL);
         }
     }
 
@@ -128,86 +133,86 @@ public class LoginModuleFragment extends BaseFragment<LoginModel, LoginPresenter
     private List<String> initDownLoadTable() {
         tables.clear();
         tables.add("CUSTOMERCONTACT");
-//        tables.add("CUSTOMER");
-//        tables.add("ROUTEDETAILS");
-//        tables.add("DICTIONARYITEMS");
-//        tables.add("PRODUCT");
-//        tables.add("CUSTOMER_PROD_LIST_ITEMS");
-//        tables.add("CUSTOMER_PRODUCT_LISTS");
-//        tables.add("MEASURE");
-//        tables.add("MEASUREDETAIL");
-//        tables.add("MEASUREPROFILEDETAIL");
-//        tables.add("PRODUCT_UOMS");
-//        tables.add("CATEGORY");
-//        tables.add("BRAND");
-//        tables.add("FORM");
-//        tables.add("MOBILEUSER");
-//        tables.add("OUT_MESSAGE");
-//        tables.add("MEASURE_PROFILE_ROLE");
-//        tables.add("SYS_USER_ROLES");
-//        tables.add("SystemConfig");
-//        tables.add("CPR_Config");
-//        tables.add("UOMS");
-//        tables.add("ORG_CONFIG");
-//        tables.add("USER_SCORECARDS");
-//        tables.add("MDM_WHITE_LIST");
-//        tables.add("SELLING_STORY");
-//        tables.add("CUSTOMERCALLREVIEW");
-//        tables.add("MobileHomePage");
-//        tables.add("AttendanceLog");
-//        tables.add("SpecialAttendance");
-//        tables.add("Customer_SummaryInfo");
-//        tables.add("PersonOrganization");
-//        tables.add("PersonRelationship");
-//        tables.add("PersonRelationshipTask");
-//        tables.add("TaskPlan");
-//        tables.add("TaskDelegate");
-//        tables.add("ROUTECUSTOMERSDeleteInfo");
-//        tables.add("AuditRoute");
-//        tables.add("ExaminationTaskPlan");
-//        tables.add("ExaminationAttendance");
-//        tables.add("PersonRelationshipALL");
-//        tables.add("ManagerMeasureTransactionsReview");
-//        tables.add("TaskPlanTemp");
-//        tables.add("PersonRelationshipInspection");
-//        tables.add("PersonRelationshipMyteam");
-//        tables.add("PersonRelationshipExamination");
-//        tables.add("GuidanceInfoRelationship");
-//        tables.add("EXAMINATION");
-//        tables.add("EXAMINATION_DETAILS");
-//        tables.add("PersonRelationshipExaminationZS");
-//        tables.add("GuidanceStatistics");
-//        tables.add("SyncPerformanceTrackingForLeader");
-//        tables.add("SyncPerformanceTracking");
-//        tables.add("Ele_GradeRule");
-//        tables.add("Ele_Learning");
-//        tables.add("Ele_Ranking");
-//        tables.add("Ele_TestPaper");
-//        tables.add("Ele_PersonGold_Register");
-//        tables.add("Ele_LearningTracking");
-//        tables.add("Ele_ActivityStateDetailed");
-//        tables.add("Ele_ActivityReachRate");
-//        tables.add("Ele_ActivityManagerDetailed");
-//        tables.add("ActivityCustomerSummaryInfo");
-//        tables.add("Verystar_User");
-//        tables.add("customer_manager_summaryInfo");
-//        tables.add("Verystar_Ranking");
-//        tables.add("Verystar_Reward");
-//        tables.add("Verystar_Achievements");
-//        tables.add("Verystar_RewardInfo");
-//        tables.add("Verystar_RewardDetailed");
-//        tables.add("Verystar_RewardImg");
-//        tables.add("Verystar_ShowInfo");
-//        tables.add("Verystar_Img");
-//        tables.add("Verystar_ShowVote");
-//        tables.add("LoveSharingInfo");
-//        tables.add("Verystar_ArticleInfo");
-//        tables.add("Verystar_ArticleVote");
-//        tables.add("UserNoticeInfo");
-//        tables.add("Verystar_ArticleComment");
-//        tables.add("Verystar_RuleInfo");
-//        tables.add("ANSWERSHEET");
-//        tables.add("ANSWERSHEETDETAIL");
+        tables.add("CUSTOMER");
+        tables.add("ROUTEDETAILS");
+        tables.add("DICTIONARYITEMS");
+        tables.add("PRODUCT");
+        tables.add("CUSTOMER_PROD_LIST_ITEMS");
+        tables.add("CUSTOMER_PRODUCT_LISTS");
+        tables.add("MEASURE");
+        tables.add("MEASUREDETAIL");
+        tables.add("MEASUREPROFILEDETAIL");
+        tables.add("PRODUCT_UOMS");
+        tables.add("CATEGORY");
+        tables.add("BRAND");
+        tables.add("FORM");
+        tables.add("MOBILEUSER");
+        tables.add("OUT_MESSAGE");
+        tables.add("MEASURE_PROFILE_ROLE");
+        tables.add("SYS_USER_ROLES");
+        tables.add("SystemConfig");
+        tables.add("CPR_Config");
+        tables.add("UOMS");
+        tables.add("ORG_CONFIG");
+        tables.add("USER_SCORECARDS");
+        tables.add("MDM_WHITE_LIST");
+        tables.add("SELLING_STORY");
+        tables.add("CUSTOMERCALLREVIEW");
+        tables.add("MobileHomePage");
+        tables.add("AttendanceLog");
+        tables.add("SpecialAttendance");
+        tables.add("Customer_SummaryInfo");
+        tables.add("PersonOrganization");
+        tables.add("PersonRelationship");
+        tables.add("PersonRelationshipTask");
+        tables.add("TaskPlan");
+        tables.add("TaskDelegate");
+        tables.add("ROUTECUSTOMERSDeleteInfo");
+        tables.add("AuditRoute");
+        tables.add("ExaminationTaskPlan");
+        tables.add("ExaminationAttendance");
+        tables.add("PersonRelationshipALL");
+        tables.add("ManagerMeasureTransactionsReview");
+        tables.add("TaskPlanTemp");
+        tables.add("PersonRelationshipInspection");
+        tables.add("PersonRelationshipMyteam");
+        tables.add("PersonRelationshipExamination");
+        tables.add("GuidanceInfoRelationship");
+        tables.add("EXAMINATION");
+        tables.add("EXAMINATION_DETAILS");
+        tables.add("PersonRelationshipExaminationZS");
+        tables.add("GuidanceStatistics");
+        tables.add("SyncPerformanceTrackingForLeader");
+        tables.add("SyncPerformanceTracking");
+        tables.add("Ele_GradeRule");
+        tables.add("Ele_Learning");
+        tables.add("Ele_Ranking");
+        tables.add("Ele_TestPaper");
+        tables.add("Ele_PersonGold_Register");
+        tables.add("Ele_LearningTracking");
+        tables.add("Ele_ActivityStateDetailed");
+        tables.add("Ele_ActivityReachRate");
+        tables.add("Ele_ActivityManagerDetailed");
+        tables.add("ActivityCustomerSummaryInfo");
+        tables.add("Verystar_User");
+        tables.add("customer_manager_summaryInfo");
+        tables.add("Verystar_Ranking");
+        tables.add("Verystar_Reward");
+        tables.add("Verystar_Achievements");
+        tables.add("Verystar_RewardInfo");
+        tables.add("Verystar_RewardDetailed");
+        tables.add("Verystar_RewardImg");
+        tables.add("Verystar_ShowInfo");
+        tables.add("Verystar_Img");
+        tables.add("Verystar_ShowVote");
+        tables.add("LoveSharingInfo");
+        tables.add("Verystar_ArticleInfo");
+        tables.add("Verystar_ArticleVote");
+        tables.add("UserNoticeInfo");
+        tables.add("Verystar_ArticleComment");
+        tables.add("Verystar_RuleInfo");
+        tables.add("ANSWERSHEET");
+        tables.add("ANSWERSHEETDETAIL");
         return tables;
     }
 
@@ -233,5 +238,39 @@ public class LoginModuleFragment extends BaseFragment<LoginModel, LoginPresenter
             progressDialog.dismiss();
         }
         showDialog("表数据下载完成,耗时:" + diffTime + "ms", false);
+    }
+
+    @Override
+    public void onDownFile(String msg) {
+        if (!progressDialog.isShowing()) {
+            progressDialog.show();
+        }
+        progressDialog.setMessage(msg);
+    }
+
+    @Override
+    public void onDownFileError(String errorMsg) {
+        if(progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
+        AlertDialog.Builder downFileDialogBuilder = new AlertDialog.Builder(getContext());
+        downFileDialogBuilder.setTitle("提示")
+                .setMessage(errorMsg)
+                .setCancelable(false)
+                .setPositiveButton("确定", null)
+                .show();
+    }
+
+    @Override
+    public void onDownFileSuccess(String msg) {
+        if(progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
+        AlertDialog.Builder downFileDialogBuilder = new AlertDialog.Builder(getContext());
+        downFileDialogBuilder.setTitle("提示")
+                .setMessage(msg)
+                .setCancelable(false)
+                .setPositiveButton("确定", null)
+                .show();
     }
 }

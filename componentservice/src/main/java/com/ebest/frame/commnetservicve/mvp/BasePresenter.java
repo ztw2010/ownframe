@@ -1,5 +1,7 @@
 package com.ebest.frame.commnetservicve.mvp;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -38,6 +40,13 @@ public class BasePresenter<V extends BaseView, M extends BaseModel> implements P
     public void attachView(V view) {
         this.mView = view;
         this.TAG = this.getClass().getName();
+        if (view instanceof Fragment) {
+            this.mContext = ((Fragment) view).getActivity().getApplicationContext();
+        } else if (view instanceof Activity) {
+            this.mContext = ((Activity) view).getApplicationContext();
+        } else if (view instanceof android.support.v4.app.Fragment) {
+            this.mContext = ((android.support.v4.app.Fragment) view).getActivity().getApplicationContext();
+        }
     }
 
     //    获取绑定Model层实例

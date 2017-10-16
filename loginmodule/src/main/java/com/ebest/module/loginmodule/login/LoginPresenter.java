@@ -3,14 +3,16 @@ package com.ebest.module.loginmodule.login;
 import android.Manifest;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
+import android.text.format.Formatter;
 import android.util.Log;
 
 import com.ebest.frame.annomationapilib.aop.Permission;
 import com.ebest.frame.baselib.excutor.SmartExecutor;
 import com.ebest.frame.baselib.handler.WeakHandler;
+import com.ebest.frame.baselib.okhttp.model.Progress;
 import com.ebest.frame.baselib.okhttp.rx2.process.CommonSubscriber;
 import com.ebest.frame.baselib.okhttp.rx2.process.ResponeThrowable;
-import com.ebest.frame.baselib.okhttp.rx2.process.RxUtil;
 import com.ebest.frame.baselib.xml.XmlBean;
 
 import java.util.List;
@@ -97,10 +99,44 @@ public class LoginPresenter extends LoginContract.Presenter {
         });
     }
 
+    @Override
+    public void downFile(String fileUrl) {
+        if (!TextUtils.isEmpty(fileUrl)) {
+            addDisposables(mModel.downFile(fileUrl).subscribeWith(new CommonSubscriber<Progress>() {
+                @Override
+                protected void doOnStart() {
+                    mView.onDownFile("文件下载中....");
+                }
+
+                @Override
+                protected void doOnError(ResponeThrowable responeThrowable) {
+                    mView.onDownFileError(responeThrowable.message);
+                    dispose();
+                }
+
+                @Override
+                public void onNext(Progress progress) {
+                    super.onNext(progress);
+                    String downloadLength = Formatter.formatFileSize(mContext, progress.currentSize);
+                    String totalLength = Formatter.formatFileSize(mContext, progress.totalSize);
+                    String speed = Formatter.formatFileSize(mContext, progress.speed);
+                    String msg = String.format("文件总大小为:%s,已下载:%s,速率:%s/s", totalLength, downloadLength, speed);
+                    Log.d(TAG, msg);
+                    mView.onDownFile(msg);
+                }
+
+                @Override
+                public void onComplete() {
+                    super.onComplete();
+                    mView.onDownFileSuccess("文件下载完成");
+                }
+            }));
+        }
+    }
+
     private void downloadTable(final String tableName) {
 
         addDisposables(mModel.getDownLoadTableData(tableName)
-                .compose(RxUtil.<XmlBean>rxSchedulerHelper())
                 .subscribeWith(new CommonSubscriber<XmlBean>() {
 
                     Long beginTime = 0l;
