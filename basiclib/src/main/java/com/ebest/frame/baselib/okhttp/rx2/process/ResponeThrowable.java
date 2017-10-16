@@ -1,4 +1,4 @@
-package com.ebest.frame.baselib.okhttp.rx1.subscribe;
+package com.ebest.frame.baselib.okhttp.rx2.process;
 
 /**
  * Created by ztw on 2017/10/11.

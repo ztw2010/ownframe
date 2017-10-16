@@ -3,11 +3,10 @@ package com.ebest.frame.commnetservicve.mvp;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.trello.rxlifecycle.components.support.RxFragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -16,7 +15,7 @@ import butterknife.Unbinder;
  * Created by ztw on 2017/10/10.
  */
 
-public abstract class BaseFragment<M extends BaseModel, P extends BasePresenter> extends RxFragment {
+public abstract class BaseFragment<M extends BaseModel, P extends BasePresenter> extends Fragment {
     protected Unbinder unbinder;
     protected View rootView;
     protected Context mContext = null;//context

@@ -1,11 +1,11 @@
-package com.ebest.frame.baselib.okhttp.rx1.adapter;
+package com.ebest.frame.baselib.okhttp.rx2.adapter;
 
 
 import com.ebest.frame.baselib.okhttp.adapter.AdapterParam;
 import com.ebest.frame.baselib.okhttp.adapter.Call;
 import com.ebest.frame.baselib.okhttp.adapter.CallAdapter;
 
-import rx.Completable;
+import io.reactivex.Completable;
 
 /**
  * ================================================
@@ -15,7 +15,7 @@ import rx.Completable;
 public class CompletableResponse<T> implements CallAdapter<T, Completable> {
     @Override
     public Completable adapt(Call<T> call, AdapterParam param) {
-        ObservableResponse<T> body = new ObservableResponse<>();
-        return body.adapt(call, param).toCompletable();
+        ObservableResponse<T> observable = new ObservableResponse<>();
+        return observable.adapt(call, param).ignoreElements();
     }
 }

@@ -2,8 +2,8 @@ package com.ebest.frame.commnetservicve.mvp;
 
 import android.content.Context;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by ztw on 2017/10/10.
@@ -17,21 +17,20 @@ public class BasePresenter<V extends BaseView, M extends BaseModel> implements P
 
     protected M mModel;
 
-    protected CompositeSubscription mCompositeSubscription;
+    protected CompositeDisposable compositeDisposable;
 
     protected String TAG = "";
 
-    protected void unSubscribe() {
-        if (mCompositeSubscription != null) {
-            mCompositeSubscription.unsubscribe();
+    public void addDisposables(Disposable disposable) {
+        if (compositeDisposable == null || compositeDisposable.isDisposed()) {
+            compositeDisposable = new CompositeDisposable();
         }
+        compositeDisposable.add(disposable);
     }
 
-    protected void addSubscribe(Subscription subscription) {
-        if (mCompositeSubscription == null || mCompositeSubscription.isUnsubscribed()) {
-            mCompositeSubscription = new CompositeSubscription();
-        }
-        mCompositeSubscription.add(subscription);
+    public void disposes() {
+        if (compositeDisposable != null)
+            compositeDisposable.clear();
     }
 
     //    获取绑定View实例
@@ -62,7 +61,7 @@ public class BasePresenter<V extends BaseView, M extends BaseModel> implements P
     @Override
     public void detachView() {
         this.mView = null;
-        unSubscribe();
+        disposes();
     }
 
     public V getView() {

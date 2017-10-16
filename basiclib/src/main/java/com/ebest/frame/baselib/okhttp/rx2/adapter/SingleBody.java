@@ -1,10 +1,11 @@
-package com.ebest.frame.baselib.okhttp.rx1.adapter;
+package com.ebest.frame.baselib.okhttp.rx2.adapter;
+
 
 import com.ebest.frame.baselib.okhttp.adapter.AdapterParam;
 import com.ebest.frame.baselib.okhttp.adapter.Call;
 import com.ebest.frame.baselib.okhttp.adapter.CallAdapter;
 
-import rx.Single;
+import io.reactivex.Single;
 
 /**
  * ================================================
@@ -14,7 +15,7 @@ import rx.Single;
 public class SingleBody<T> implements CallAdapter<T, Single<T>> {
     @Override
     public Single<T> adapt(Call<T> call, AdapterParam param) {
-        ObservableBody<T> body = new ObservableBody<>();
-        return body.adapt(call, param).toSingle();
+        ObservableBody<T> observable = new ObservableBody<>();
+        return observable.adapt(call, param).singleOrError();
     }
 }

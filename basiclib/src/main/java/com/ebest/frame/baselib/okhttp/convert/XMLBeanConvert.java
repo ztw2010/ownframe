@@ -147,6 +147,6 @@ public class XMLBeanConvert implements Converter<XmlBean> {
             xmlBean.setStandardXML(builder.toString());
             return xmlBean;
         }
-        return null;
+        return new XmlBean();
     }
 }

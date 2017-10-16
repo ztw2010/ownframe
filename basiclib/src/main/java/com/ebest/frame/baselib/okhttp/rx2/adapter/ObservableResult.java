@@ -1,14 +1,13 @@
-package com.ebest.frame.baselib.okhttp.rx1.adapter;
-
+package com.ebest.frame.baselib.okhttp.rx2.adapter;
 
 import com.ebest.frame.baselib.okhttp.adapter.AdapterParam;
 import com.ebest.frame.baselib.okhttp.adapter.Call;
 import com.ebest.frame.baselib.okhttp.adapter.CallAdapter;
 import com.ebest.frame.baselib.okhttp.model.Response;
 import com.ebest.frame.baselib.okhttp.model.Result;
-import com.ebest.frame.baselib.okhttp.rx1.subscribe.ResultOnSubscribe;
+import com.ebest.frame.baselib.okhttp.rx2.observable.ResultObservable;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * ================================================
@@ -18,8 +17,7 @@ import rx.Observable;
 public class ObservableResult<T> implements CallAdapter<T, Observable<Result<T>>> {
     @Override
     public Observable<Result<T>> adapt(Call<T> call, AdapterParam param) {
-        Observable.OnSubscribe<Response<T>> subscribe = AnalysisParams.analysis(call, param);
-        ResultOnSubscribe<T> resultSubscribe = new ResultOnSubscribe<>(subscribe);
-        return Observable.create(resultSubscribe);
+        Observable<Response<T>> observable = AnalysisParams.analysis(call, param);
+        return new ResultObservable<>(observable);
     }
 }

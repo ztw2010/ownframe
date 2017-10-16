@@ -39,7 +39,5 @@ dependencies {
     compile files('libs/xstream-1.4.10-java7.jar')
     compile rootProject.ext.dependencies.rxAndroid
     compile rootProject.ext.dependencies.rxJava
-    compile rootProject.ext.dependencies.rxlifecycle
-    compile rootProject.ext.dependencies.rxlifecycleComponents
     compile rootProject.ext.dependencies.aspectjrt
 }

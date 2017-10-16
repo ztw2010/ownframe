@@ -8,9 +8,9 @@ import android.util.Log;
 import com.ebest.frame.annomationapilib.aop.Permission;
 import com.ebest.frame.baselib.excutor.SmartExecutor;
 import com.ebest.frame.baselib.handler.WeakHandler;
-import com.ebest.frame.baselib.okhttp.model.Response;
-import com.ebest.frame.baselib.okhttp.rx1.subscribe.ResponeThrowable;
-import com.ebest.frame.baselib.okhttp.rx1.subscribe.RxSubscriber;
+import com.ebest.frame.baselib.okhttp.rx2.process.CommonSubscriber;
+import com.ebest.frame.baselib.okhttp.rx2.process.ResponeThrowable;
+import com.ebest.frame.baselib.okhttp.rx2.process.RxUtil;
 import com.ebest.frame.baselib.xml.XmlBean;
 
 import java.util.List;
@@ -55,13 +55,12 @@ public class LoginPresenter extends LoginContract.Presenter {
         }
     });
 
-    private void restorState(){
+    private void restorState() {
         isFirstDown.set(true);
         isDownFinish.set(false);
         firstDownTime.set(0l);
         lastDownTime.set(0l);
         resultXmlBeen.clear();
-        unSubscribe();
     }
 
     @Permission(Manifest.permission.CAMERA)
@@ -99,41 +98,50 @@ public class LoginPresenter extends LoginContract.Presenter {
     }
 
     private void downloadTable(final String tableName) {
-        addSubscribe(mModel.getDownLoadTableData(tableName).subscribe(new RxSubscriber<Response<XmlBean>>() {
 
-            Long beginTime = 0l;
+        addDisposables(mModel.getDownLoadTableData(tableName)
+                .compose(RxUtil.<XmlBean>rxSchedulerHelper())
+                .subscribeWith(new CommonSubscriber<XmlBean>() {
 
-            @Override
-            public void onStart() {
-                super.onStart();
-                beginTime = System.currentTimeMillis();
-                Log.d(TAG, "表" + tableName + "开始下载,开始时间=" + beginTime);
-                if (isFirstDown.get()) {
-                    isFirstDown.set(false);
-                    Log.d(TAG, "表数据开始下载");
-                    firstDownTime.set(beginTime);
-                    mView.onShowDialog(0);
-                }
-            }
+                    Long beginTime = 0l;
 
-            @Override
-            public void onSuccess(Response<XmlBean> response) {
-                Long endTime = System.currentTimeMillis();
-                Log.d(TAG, "表" + tableName + "下载结束,结束时间=" + endTime + ",下载耗时=" + (endTime - beginTime));
-                resultXmlBeen.add(response.body());
-                mView.onShowDialog(100 / tables.size() * resultXmlBeen.size());
-                //mView.onTableDownLoadSuccess(response.body());
-            }
+                    @Override
+                    protected void doOnStart() {
+                        beginTime = System.currentTimeMillis();
+                        Log.d(TAG, "表" + tableName + "开始下载,开始时间=" + beginTime + ",所在线程=" + Thread.currentThread().getName());
+                        if (isFirstDown.get()) {
+                            isFirstDown.set(false);
+                            Log.d(TAG, "表数据开始下载");
+                            firstDownTime.set(beginTime);
+                            mView.onShowDialog(0);
+                        }
+                    }
 
-            @Override
-            protected void onError(ResponeThrowable ex) {
-                Long endTime = System.currentTimeMillis();
-                Log.d(TAG, "表" + tableName + "下载失败,结束时间=" + endTime + ",下载耗时=" + (endTime - beginTime) + ",失败原因=" + ex.message);
-                if (!isDownFinish.get()) {
-                    isDownFinish.set(true);
-                    mView.showErrorWithStatus(ex.message);
-                }
-            }
-        }));
+                    @Override
+                    public void onNext(XmlBean xmlBean) {
+                        Long endTime = System.currentTimeMillis();
+                        Log.d(TAG, "表" + tableName + "下载结束,结束时间=" + endTime + ",下载耗时=" + (endTime - beginTime) + ",所在线程=" + Thread.currentThread().getName());
+                        resultXmlBeen.add(xmlBean);
+                        mView.onShowDialog(100 / tables.size() * resultXmlBeen.size());
+                    }
+
+                    @Override
+                    protected void doOnError(ResponeThrowable responeThrowable) {
+                        Long endTime = System.currentTimeMillis();
+                        Log.d(TAG, "表" + tableName + "下载失败,结束时间=" + endTime + ",下载耗时=" + (endTime - beginTime) + ",失败原因=" + responeThrowable.message + ",所在线程=" + Thread.currentThread().getName());
+                        if (!isDownFinish.get()) {
+                            disposes();
+                            isDownFinish.set(true);
+                            mView.showErrorWithStatus(responeThrowable.message);
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                        Log.d(TAG, "表  " + tableName + "  onComplete, 所在线程=" + Thread.currentThread().getName());
+                    }
+                })
+        );
     }
 }

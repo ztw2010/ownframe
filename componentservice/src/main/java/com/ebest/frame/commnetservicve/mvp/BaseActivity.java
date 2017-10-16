@@ -3,10 +3,10 @@ package com.ebest.frame.commnetservicve.mvp;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 
 import com.ebest.frame.annomationapilib.parama.Parceler;
 import com.ebest.frame.baselib.util.MPermissionUtils;
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -15,7 +15,7 @@ import butterknife.Unbinder;
  * Created by ztw on 2017/10/10.
  */
 
-public abstract class BaseActivity<M extends BaseModel, P extends BasePresenter> extends RxAppCompatActivity {
+public abstract class BaseActivity<M extends BaseModel, P extends BasePresenter> extends FragmentActivity {
     //    定义Presenter
     protected P mPresenter;
 
@@ -123,4 +123,5 @@ public abstract class BaseActivity<M extends BaseModel, P extends BasePresenter>
         MPermissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
 }

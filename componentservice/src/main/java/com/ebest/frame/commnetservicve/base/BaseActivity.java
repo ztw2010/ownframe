@@ -65,4 +65,5 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         MPermissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
 }
