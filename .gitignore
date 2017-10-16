@@ -62,3 +62,4 @@ freeline_project_description.json
 !/componentlib/src/
 !/componentrelease/
 !/repo/
+/basiclib/src/main/java/com/ebest/frame/baselib/constant/C.java
