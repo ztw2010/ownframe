@@ -13,11 +13,13 @@ import com.ebest.frame.baselib.greendao.base.MobileBeanFactory;
 import com.ebest.frame.baselib.okhttp.OkGo;
 import com.ebest.frame.baselib.okhttp.cache.CacheEntity;
 import com.ebest.frame.baselib.okhttp.cache.CacheMode;
+import com.ebest.frame.baselib.okhttp.interceptor.HttpLoggingInterceptor;
 import com.ebest.frame.mainmodule.RouterRuleCreator;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 import okhttp3.OkHttpClient;
 
@@ -59,6 +61,11 @@ public class IApplication extends Application {
         builder.writeTimeout(OkGo.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);
         //全局的连接超时时间
         builder.connectTimeout(OkGo.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor("OkGo");
+        loggingInterceptor.setPrintLevel(HttpLoggingInterceptor.Level.BODY);
+        loggingInterceptor.setColorLevel(Level.INFO);
+        builder.addInterceptor(loggingInterceptor);
+
         OkGo.getInstance().init(this)
                 .setOkHttpClient(builder.build())               //建议设置OkHttpClient，不设置将使用默认的
                 .setCacheMode(CacheMode.NO_CACHE)               //全局统一缓存模式，默认不使用缓存，可以不传

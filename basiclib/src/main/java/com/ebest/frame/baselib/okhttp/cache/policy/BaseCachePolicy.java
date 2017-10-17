@@ -139,7 +139,6 @@ public abstract class BaseCachePolicy<T> implements CachePolicy<T> {
                 }
 
                 if (onAnalysisResponse(call, response)) return;
-
                 try {
                     T body = request.getConverter().convertResponse(response);
                     //save cache when request is successful

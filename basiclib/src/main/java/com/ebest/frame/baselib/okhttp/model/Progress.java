@@ -3,6 +3,7 @@ package com.ebest.frame.baselib.okhttp.model;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.SystemClock;
+import android.util.Log;
 
 import com.ebest.frame.baselib.okhttp.OkGo;
 import com.ebest.frame.baselib.okhttp.request.base.Request;
@@ -84,6 +85,7 @@ public class Progress implements Serializable {
 
         long currentTime = SystemClock.elapsedRealtime();
         boolean isNotify = (currentTime - progress.lastRefreshTime) >= OkGo.REFRESH_TIME;
+        Log.d(TAG, "isNotify=" + isNotify);
         if (isNotify || progress.currentSize == totalSize) {
             long diffTime = currentTime - progress.lastRefreshTime;
             if (diffTime == 0) diffTime = 1;
@@ -98,7 +100,9 @@ public class Progress implements Serializable {
         return progress;
     }
 
-    /** 平滑网速，避免抖动过大 */
+    /**
+     * 平滑网速，避免抖动过大
+     */
     private long bufferSpeed(long speed) {
         speedBuffer.add(speed);
         if (speedBuffer.size() > 10) {
@@ -111,7 +115,9 @@ public class Progress implements Serializable {
         return sum / speedBuffer.size();
     }
 
-    /** 转换进度信息 */
+    /**
+     * 转换进度信息
+     */
     public void from(Progress progress) {
         totalSize = progress.totalSize;
         currentSize = progress.currentSize;
@@ -194,17 +200,17 @@ public class Progress implements Serializable {
     @Override
     public String toString() {
         return "Progress{" +//
-               "fraction=" + fraction +//
-               ", totalSize=" + totalSize +//
-               ", currentSize=" + currentSize +//
-               ", speed=" + speed +//
-               ", status=" + status +//
-               ", priority=" + priority +//
-               ", folder=" + folder +//
-               ", filePath=" + filePath +//
-               ", fileName=" + fileName +//
-               ", tag=" + tag +//
-               ", url=" + url +//
-               '}';
+                "fraction=" + fraction +//
+                ", totalSize=" + totalSize +//
+                ", currentSize=" + currentSize +//
+                ", speed=" + speed +//
+                ", status=" + status +//
+                ", priority=" + priority +//
+                ", folder=" + folder +//
+                ", filePath=" + filePath +//
+                ", fileName=" + fileName +//
+                ", tag=" + tag +//
+                ", url=" + url +//
+                '}';
     }
 }

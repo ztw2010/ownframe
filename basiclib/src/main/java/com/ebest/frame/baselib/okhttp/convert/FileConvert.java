@@ -5,6 +5,8 @@ import android.text.TextUtils;
 
 import com.ebest.frame.baselib.okhttp.callback.Callback;
 import com.ebest.frame.baselib.okhttp.model.Progress;
+import com.ebest.frame.baselib.okhttp.rx2.process.ProgressListener;
+import com.ebest.frame.baselib.okhttp.rx2.process.ProgressResponseBody;
 import com.ebest.frame.baselib.okhttp.utils.HttpUtils;
 import com.ebest.frame.baselib.okhttp.utils.IOUtils;
 
@@ -23,6 +25,8 @@ import okhttp3.ResponseBody;
 public class FileConvert implements Converter<File> {
 
     public static final String DM_TARGET_FOLDER = File.separator + "download" + File.separator; //下载目标文件夹
+
+    private final String TAG = "FileConvert";
 
     private String folder;                  //目标文件存储的文件夹路径
     private String fileName;                //目标文件存储的文件名
@@ -47,43 +51,47 @@ public class FileConvert implements Converter<File> {
 
     @Override
     public File convertResponse(Response response) throws Throwable {
-        String url = response.request().url().toString();
-        if (TextUtils.isEmpty(folder)) folder = Environment.getExternalStorageDirectory() + DM_TARGET_FOLDER;
+        final String url = response.request().url().toString();
+        if (TextUtils.isEmpty(folder))
+            folder = Environment.getExternalStorageDirectory() + DM_TARGET_FOLDER;
         if (TextUtils.isEmpty(fileName)) fileName = HttpUtils.getNetFileName(response, url);
 
         File dir = new File(folder);
         IOUtils.createFolder(dir);
-        File file = new File(dir, fileName);
+        final File file = new File(dir, fileName);
         IOUtils.delFileOrFolder(file);
 
         InputStream bodyStream = null;
         byte[] buffer = new byte[8192];
         FileOutputStream fileOutputStream = null;
+        final Progress progress = new Progress();
         try {
-            ResponseBody body = response.body();
-            if (body == null) return null;
-
+            ResponseBody body = new ProgressResponseBody(response.body(), new ProgressListener() {
+                @Override
+                public void onProgressChanged(long readByte, long totalBytes) {
+                    if (callback != null) {
+                        Progress.changeProgress(progress, readByte, new Progress.Action() {
+                            @Override
+                            public void call(Progress progress) {
+                                onProgress(progress);
+                            }
+                        });
+                    }
+                }
+            });
             bodyStream = body.byteStream();
-            Progress progress = new Progress();
             progress.totalSize = body.contentLength();
             progress.fileName = fileName;
             progress.filePath = file.getAbsolutePath();
             progress.status = Progress.LOADING;
             progress.url = url;
             progress.tag = url;
-
+            if (body == null) return null;
+            bodyStream = body.byteStream();
             int len;
             fileOutputStream = new FileOutputStream(file);
             while ((len = bodyStream.read(buffer)) != -1) {
                 fileOutputStream.write(buffer, 0, len);
-
-                if (callback == null) continue;
-                Progress.changeProgress(progress, len, new Progress.Action() {
-                    @Override
-                    public void call(Progress progress) {
-                        onProgress(progress);
-                    }
-                });
             }
             fileOutputStream.flush();
             return file;

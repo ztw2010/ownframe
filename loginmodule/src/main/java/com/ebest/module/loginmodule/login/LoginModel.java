@@ -1,5 +1,7 @@
 package com.ebest.module.loginmodule.login;
 
+import android.util.Log;
+
 import com.ebest.frame.baselib.constant.C;
 import com.ebest.frame.baselib.okhttp.OkGo;
 import com.ebest.frame.baselib.okhttp.callback.FileCallback;
@@ -29,22 +31,6 @@ public class LoginModel implements LoginContract.Model {
     private final String TAG = "LoginModel";
 
     @Override
-    public Flowable<XmlBean> getDownLoadTableData(String tableName) {
-        return OkGo.<XmlBean>post(C.TABLE_URL)
-                .tag(tableName)
-                .upString(tableName + ",0")
-                .converter(new XMLBeanConvert())
-                .adapt(new FlowableResponse<XmlBean>())
-                .compose(RxUtil.<Response<XmlBean>>rxSchedulerHelper())
-                .map(new Function<Response<XmlBean>, XmlBean>() {
-                    @Override
-                    public XmlBean apply(@NonNull Response<XmlBean> xmlBeanResponse) throws Exception {
-                        return xmlBeanResponse.body();
-                    }
-                });
-    }
-
-    @Override
     public Flowable<Progress> downFile(final String fileUrl) {
         return Flowable.create(new FlowableOnSubscribe<Progress>() {
             @Override
@@ -65,11 +51,27 @@ public class LoginModel implements LoginContract.Model {
                     @Override
                     public void downloadProgress(Progress progress) {
                         super.downloadProgress(progress);
+                        Log.d(TAG, "downloadProgress progress=" + progress);
                         e.onNext(progress);
                     }
                 });
             }
         }, BackpressureStrategy.LATEST)
                 .compose(RxUtil.<Progress>rxSchedulerHelper());
+    }
+
+    @Override
+    public Flowable<XmlBean> getDownLoadTable(String tableName) {
+        return OkGo.<XmlBean>post(C.TABLE_URL)
+                .tag(tableName)
+                .upString(tableName + ",0")
+                .converter(new XMLBeanConvert())
+                .adapt(new FlowableResponse<XmlBean>())
+                .map(new Function<Response<XmlBean>, XmlBean>() {
+                    @Override
+                    public XmlBean apply(@NonNull Response<XmlBean> xmlBeanResponse) throws Exception {
+                        return xmlBeanResponse.body();
+                    }
+                });
     }
 }

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 
+import org.reactivestreams.Subscription;
+
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
@@ -20,6 +22,8 @@ public class BasePresenter<V extends BaseView, M extends BaseModel> implements P
     protected M mModel;
 
     protected CompositeDisposable compositeDisposable;
+
+    protected Subscription subscription;
 
     protected String TAG = "";
 

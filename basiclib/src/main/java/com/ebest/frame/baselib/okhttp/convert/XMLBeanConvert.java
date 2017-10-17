@@ -15,12 +15,17 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okio.Buffer;
 
 /**
  * Created by ztw on 2017/10/10.
@@ -29,6 +34,15 @@ import okhttp3.ResponseBody;
 
 public class XMLBeanConvert implements Converter<XmlBean> {
 
+    private final Charset UTF8 = Charset.forName("UTF-8");
+
+    private final String TAG = "XMLBeanConvert";
+
+    /**
+     * XmlPullParser解析方式
+     * @param xmlStr
+     * @return
+     */
     private XmlBean parseByPull(String xmlStr) {
         xmlStr = xmlStr.replaceAll("&", "&amp;");
         XmlPullParser parser = Xml.newPullParser();
@@ -146,7 +160,37 @@ public class XMLBeanConvert implements Converter<XmlBean> {
             builder.append("</t>");
             xmlBean.setStandardXML(builder.toString());
             return xmlBean;
+        } else {
+            XmlBean xmlBean = new XmlBean();
+            String tableName = getTableName(response.request());
+            xmlBean.setTableName(tableName);
+            return xmlBean;
         }
-        return new XmlBean();
+    }
+
+    private String getTableName(Request request) {
+        Request copy = request.newBuilder().build();
+        RequestBody body = copy.body();
+        if (body == null)
+            return "";
+        Buffer buffer = new Buffer();
+        try {
+            body.writeTo(buffer);
+            Charset charset = getCharset(body.contentType());
+            String str = buffer.readString(charset);
+            if (str.contains(",")) {
+                return str.split(",")[0];
+            }
+            return str;
+        } catch (IOException e) {
+            Log.e(TAG, "getTableName has error", e);
+        }
+        return "";
+    }
+
+    private Charset getCharset(MediaType contentType) {
+        Charset charset = contentType != null ? contentType.charset(UTF8) : UTF8;
+        if (charset == null) charset = UTF8;
+        return charset;
     }
 }

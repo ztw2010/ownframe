@@ -76,53 +76,73 @@ public class OkGo {
         private static OkGo holder = new OkGo();
     }
 
-    /** get请求 */
+    /**
+     * get请求
+     */
     public static <T> GetRequest<T> get(String url) {
         return new GetRequest<>(url);
     }
 
-    /** post请求 */
+    /**
+     * post请求
+     */
     public static <T> PostRequest<T> post(String url) {
         return new PostRequest<>(url);
     }
 
-    /** put请求 */
+    /**
+     * put请求
+     */
     public static <T> PutRequest<T> put(String url) {
         return new PutRequest<>(url);
     }
 
-    /** head请求 */
+    /**
+     * head请求
+     */
     public static <T> HeadRequest<T> head(String url) {
         return new HeadRequest<>(url);
     }
 
-    /** delete请求 */
+    /**
+     * delete请求
+     */
     public static <T> DeleteRequest<T> delete(String url) {
         return new DeleteRequest<>(url);
     }
 
-    /** options请求 */
+    /**
+     * options请求
+     */
     public static <T> OptionsRequest<T> options(String url) {
         return new OptionsRequest<>(url);
     }
 
-    /** patch请求 */
+    /**
+     * patch请求
+     */
     public static <T> PatchRequest<T> patch(String url) {
         return new PatchRequest<>(url);
     }
 
-    /** trace请求 */
+    /**
+     * trace请求
+     */
     public static <T> TraceRequest<T> trace(String url) {
         return new TraceRequest<>(url);
     }
 
-    /** 必须在全局Application先调用，获取context上下文，否则缓存无法使用 */
+    /**
+     * 必须在全局Application先调用，获取context上下文，否则缓存无法使用
+     */
     public OkGo init(Application app) {
         context = app;
         return this;
     }
 
-    /** 获取全局上下文 */
+    /**
+     * 获取全局上下文
+     */
     public Context getContext() {
         HttpUtils.checkNotNull(context, "please call OkGo.getInstance().init() first in application!");
         return context;
@@ -137,78 +157,104 @@ public class OkGo {
         return okHttpClient;
     }
 
-    /** 必须设置 */
+    /**
+     * 必须设置
+     */
     public OkGo setOkHttpClient(OkHttpClient okHttpClient) {
         HttpUtils.checkNotNull(okHttpClient, "okHttpClient == null");
         this.okHttpClient = okHttpClient;
         return this;
     }
 
-    /** 获取全局的cookie实例 */
+    /**
+     * 获取全局的cookie实例
+     */
     public CookieJarImpl getCookieJar() {
         return (CookieJarImpl) okHttpClient.cookieJar();
     }
 
-    /** 超时重试次数 */
+    /**
+     * 超时重试次数
+     */
     public OkGo setRetryCount(int retryCount) {
         if (retryCount < 0) throw new IllegalArgumentException("retryCount must > 0");
         mRetryCount = retryCount;
         return this;
     }
 
-    /** 超时重试次数 */
+    /**
+     * 超时重试次数
+     */
     public int getRetryCount() {
         return mRetryCount;
     }
 
-    /** 全局的缓存模式 */
+    /**
+     * 全局的缓存模式
+     */
     public OkGo setCacheMode(CacheMode cacheMode) {
         mCacheMode = cacheMode;
         return this;
     }
 
-    /** 获取全局的缓存模式 */
+    /**
+     * 获取全局的缓存模式
+     */
     public CacheMode getCacheMode() {
         return mCacheMode;
     }
 
-    /** 全局的缓存过期时间 */
+    /**
+     * 全局的缓存过期时间
+     */
     public OkGo setCacheTime(long cacheTime) {
         if (cacheTime <= -1) cacheTime = CacheEntity.CACHE_NEVER_EXPIRE;
         mCacheTime = cacheTime;
         return this;
     }
 
-    /** 获取全局的缓存过期时间 */
+    /**
+     * 获取全局的缓存过期时间
+     */
     public long getCacheTime() {
         return mCacheTime;
     }
 
-    /** 获取全局公共请求参数 */
+    /**
+     * 获取全局公共请求参数
+     */
     public HttpParams getCommonParams() {
         return mCommonParams;
     }
 
-    /** 添加全局公共请求参数 */
+    /**
+     * 添加全局公共请求参数
+     */
     public OkGo addCommonParams(HttpParams commonParams) {
         if (mCommonParams == null) mCommonParams = new HttpParams();
         mCommonParams.put(commonParams);
         return this;
     }
 
-    /** 获取全局公共请求头 */
+    /**
+     * 获取全局公共请求头
+     */
     public HttpHeaders getCommonHeaders() {
         return mCommonHeaders;
     }
 
-    /** 添加全局公共请求参数 */
+    /**
+     * 添加全局公共请求参数
+     */
     public OkGo addCommonHeaders(HttpHeaders commonHeaders) {
         if (mCommonHeaders == null) mCommonHeaders = new HttpHeaders();
         mCommonHeaders.put(commonHeaders);
         return this;
     }
 
-    /** 根据Tag取消请求 */
+    /**
+     * 根据Tag取消请求
+     */
     public void cancelTag(Object tag) {
         if (tag == null) return;
         for (Call call : getOkHttpClient().dispatcher().queuedCalls()) {
@@ -223,7 +269,9 @@ public class OkGo {
         }
     }
 
-    /** 根据Tag取消请求 */
+    /**
+     * 根据Tag取消请求
+     */
     public static void cancelTag(OkHttpClient client, Object tag) {
         if (client == null || tag == null) return;
         for (Call call : client.dispatcher().queuedCalls()) {
@@ -238,7 +286,9 @@ public class OkGo {
         }
     }
 
-    /** 取消所有请求请求 */
+    /**
+     * 取消所有请求请求
+     */
     public void cancelAll() {
         for (Call call : getOkHttpClient().dispatcher().queuedCalls()) {
             call.cancel();
@@ -248,7 +298,9 @@ public class OkGo {
         }
     }
 
-    /** 取消所有请求请求 */
+    /**
+     * 取消所有请求请求
+     */
     public static void cancelAll(OkHttpClient client) {
         if (client == null) return;
         for (Call call : client.dispatcher().queuedCalls()) {

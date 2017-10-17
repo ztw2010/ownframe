@@ -31,9 +31,9 @@ public interface LoginContract {
     }
 
     interface Model extends BaseModel {
-        Flowable<XmlBean> getDownLoadTableData(String tableName);
-
         Flowable<Progress> downFile(String fileUrl);
+
+        Flowable<XmlBean> getDownLoadTable(String tableName);
     }
 
     abstract class Presenter extends BasePresenter<View, Model> {
