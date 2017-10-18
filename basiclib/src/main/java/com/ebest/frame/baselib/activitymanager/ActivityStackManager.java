@@ -13,7 +13,7 @@ public class ActivityStackManager {
 
     private static final String TAG = "ActivityStackManager";
 
-    private static Stack<Activity> activityStack;
+    private static Stack<Activity> activityStack = new Stack<Activity>();
 
     private static ActivityStackManager instance;
 
@@ -74,9 +74,6 @@ public class ActivityStackManager {
      * @param activity activity
      */
     public synchronized void pushActivity(Activity activity) {
-        if (activityStack == null) {
-            activityStack = new Stack<Activity>();
-        }
         activityStack.add(activity);
     }
 

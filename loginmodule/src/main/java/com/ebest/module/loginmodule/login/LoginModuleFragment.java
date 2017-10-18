@@ -89,7 +89,7 @@ public class LoginModuleFragment extends BaseFragment<LoginModel, LoginPresenter
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_loginmodule;
+        return R.layout.loginmodule_fragment_loginmodule;
     }
 
     @Override
