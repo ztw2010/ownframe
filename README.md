@@ -1,6 +1,10 @@
 # ownframe
 一款支持组件化单独调试，各个组件通过Route自由跳转，参数自动注入的快速开发框架
 
+**架构图**<br>
+![](https://raw.githubusercontent.com/ztw2010/ownframe/master/pic/%E6%9E%B6%E6%9E%84%E5%9B%BE.png)
+
+
 **工程基础库释义**<br>
 1. **:app** 主工程<br>
 2. **:gradle-src** gradle脚本工程，用来<br>
