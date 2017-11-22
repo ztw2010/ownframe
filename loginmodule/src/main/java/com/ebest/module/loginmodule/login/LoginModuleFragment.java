@@ -250,7 +250,7 @@ public class LoginModuleFragment extends BaseFragment<LoginModel, LoginPresenter
 
     @Override
     public void onDownFileError(String errorMsg) {
-        if(progressDialog.isShowing()){
+        if (progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
         AlertDialog.Builder downFileDialogBuilder = new AlertDialog.Builder(getContext());
@@ -263,7 +263,7 @@ public class LoginModuleFragment extends BaseFragment<LoginModel, LoginPresenter
 
     @Override
     public void onDownFileSuccess(String msg) {
-        if(progressDialog.isShowing()){
+        if (progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
         AlertDialog.Builder downFileDialogBuilder = new AlertDialog.Builder(getContext());

@@ -9,6 +9,7 @@ import com.ebest.frame.commnetservicve.mvp.BaseView;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 
 
 /**
@@ -31,7 +32,7 @@ public interface LoginContract {
     }
 
     interface Model extends BaseModel {
-        Flowable<Progress> downFile(String fileUrl);
+        Observable<Progress> downFile(String fileUrl);
 
         Flowable<XmlBean> getDownLoadTable(String tableName);
     }

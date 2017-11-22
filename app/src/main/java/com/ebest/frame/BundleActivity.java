@@ -11,8 +11,6 @@ import com.ebest.frame.bean.Book;
 import com.ebest.frame.bean.Info;
 import com.ebest.frame.commnetservicve.base.BaseActivity;
 
-import butterknife.BindView;
-
 
 /**
  * Created by haoge on 2017/6/8.
@@ -21,7 +19,6 @@ import butterknife.BindView;
 @RouterRule({"main/BundleActivity","http://ebest.cn"})
 public class BundleActivity extends BaseActivity {
 
-    @BindView(R.id.textView)
     public TextView textView;
 
     @Arg
@@ -44,6 +41,7 @@ public class BundleActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bundle);
+        textView = (TextView) findViewById(R.id.textView);
         if(builder != null){
             textView.setText("builder=" + builder.toString() + "\nbuffer=" + buffer.toString() + "\nbooks=" + books + "\nbook=" + book + "\nage=" + age);
         }

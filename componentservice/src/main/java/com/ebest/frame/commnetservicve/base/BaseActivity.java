@@ -12,8 +12,6 @@ import com.ebest.frame.annomationlib.parama.annomation.Converter;
 import com.ebest.frame.annomationlib.parama.annomation.FastJsonConverter;
 import com.ebest.frame.baselib.util.MPermissionUtils;
 
-import butterknife.ButterKnife;
-
 /**
  * Created by ztw on 2017/9/26.
  */
@@ -40,7 +38,6 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
-        ButterKnife.bind(this);
     }
 
     @Override

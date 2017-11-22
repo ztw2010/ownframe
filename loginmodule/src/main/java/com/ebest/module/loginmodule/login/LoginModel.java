@@ -14,10 +14,10 @@ import com.ebest.frame.baselib.xml.XmlBean;
 
 import java.io.File;
 
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
-import io.reactivex.FlowableEmitter;
-import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 
@@ -31,10 +31,11 @@ public class LoginModel implements LoginContract.Model {
     private final String TAG = "LoginModel";
 
     @Override
-    public Flowable<Progress> downFile(final String fileUrl) {
-        return Flowable.create(new FlowableOnSubscribe<Progress>() {
+    public Observable<Progress> downFile(final String fileUrl) {
+
+        return Observable.create(new ObservableOnSubscribe<Progress>() {
             @Override
-            public void subscribe(@NonNull final FlowableEmitter<Progress> e) throws Exception {
+            public void subscribe(@NonNull final ObservableEmitter<Progress> e) throws Exception {
                 OkGo.<File>get(fileUrl).execute(new FileCallback() {
 
                     @Override
@@ -56,8 +57,7 @@ public class LoginModel implements LoginContract.Model {
                     }
                 });
             }
-        }, BackpressureStrategy.LATEST)
-                .compose(RxUtil.<Progress>rxSchedulerHelper());
+        }).compose(RxUtil.<Progress>observableSchedulerHelper());
     }
 
     @Override

@@ -8,9 +8,6 @@ import android.support.v4.app.FragmentActivity;
 import com.ebest.frame.annomationapilib.parama.Parceler;
 import com.ebest.frame.baselib.util.MPermissionUtils;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
 /**
  * Created by ztw on 2017/10/10.
  */
@@ -18,8 +15,6 @@ import butterknife.Unbinder;
 public abstract class BaseActivity<M extends BaseModel, P extends BasePresenter> extends FragmentActivity {
     //    定义Presenter
     protected P mPresenter;
-
-    protected Unbinder unbinder;
 
     protected abstract int getLayoutId();
 
@@ -52,7 +47,6 @@ public abstract class BaseActivity<M extends BaseModel, P extends BasePresenter>
             setContentView(layoutId);
             TAG = this.getClass().getName();
             Parceler.toEntity(this, getIntent());
-            unbinder = ButterKnife.bind(this);
             bindMVP();
             onInitView(savedInstanceState);
             onEvent();
@@ -108,9 +102,6 @@ public abstract class BaseActivity<M extends BaseModel, P extends BasePresenter>
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (unbinder != null) {
-            unbinder.unbind();
-        }
         if (mPresenter != null) {
             ContractProxy.getInstance().unbindView(getView(), mPresenter);
             ContractProxy.getInstance().unbindModel(getModelClazz(), mPresenter);

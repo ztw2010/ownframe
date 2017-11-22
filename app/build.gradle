@@ -1,6 +1,7 @@
 import com.ebest.frame.gradlesrc.aop.AspectjPlugin
 
 apply plugin: 'com.ebest.gradle.component.plugin'
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -39,7 +40,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':componentservice')
-    annotationProcessor project(':annomationcompilelib')
+    apt 'com.ebest.apt:routeparam-compiler:0.0.1'
 }
 
 combuild {

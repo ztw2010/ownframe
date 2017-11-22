@@ -49,8 +49,8 @@ ext {
             greendao             : 'org.greenrobot:greendao:3.2.2',
 //
 //            // ------------- ButterKnife -------------
-            butterknife          : 'com.jakewharton:butterknife:8.5.1',
-            butterknifeCompiler  : 'com.jakewharton:butterknife-compiler:8.5.1',
+//            butterknife          : 'com.jakewharton:butterknife:8.5.1',
+//            butterknifeCompiler  : 'com.jakewharton:butterknife-compiler:8.5.1',
 
             // ------------- AOP -------------
             aspectjrt             : 'org.aspectj:aspectjrt:1.8.9'

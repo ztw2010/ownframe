@@ -21,6 +21,6 @@ android {
 }
 
 dependencies {
-    compile project(':annomationlib')
+    compile 'com.ebest.annotation:routeparam-annotation:0.0.1'
     provided rootProject.ext.dependencies.supportV4
 }

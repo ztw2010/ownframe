@@ -8,15 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
 /**
  * Created by ztw on 2017/10/10.
  */
 
 public abstract class BaseFragment<M extends BaseModel, P extends BasePresenter> extends Fragment {
-    protected Unbinder unbinder;
     protected View rootView;
     protected Context mContext = null;//context
     private boolean isViewPrepared; // 标识fragment视图已经初始化完毕
@@ -65,7 +61,6 @@ public abstract class BaseFragment<M extends BaseModel, P extends BasePresenter>
         } else {
             rootView = super.onCreateView(inflater, container, savedInstanceState);
         }
-        unbinder = ButterKnife.bind(this, rootView);
         bindMVP();
         onInitView(savedInstanceState);
         return rootView;
@@ -154,9 +149,6 @@ public abstract class BaseFragment<M extends BaseModel, P extends BasePresenter>
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (unbinder != null) {
-            unbinder.unbind();
-        }
         if (mPresenter != null) {
             ContractProxy.getInstance().unbindView(getViewImp(), mPresenter);
             ContractProxy.getInstance().unbindModel(getModelClazz(), mPresenter);

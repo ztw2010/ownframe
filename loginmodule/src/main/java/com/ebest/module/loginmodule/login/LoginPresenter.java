@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.ebest.frame.annomationapilib.aop.Permission;
 import com.ebest.frame.baselib.okhttp.model.Progress;
-import com.ebest.frame.baselib.okhttp.rx2.process.CommonSubscriber;
 import com.ebest.frame.baselib.okhttp.rx2.process.ExceptionHandle;
 import com.ebest.frame.baselib.okhttp.rx2.process.ResponeThrowable;
 import com.ebest.frame.baselib.xml.XmlBean;
@@ -22,6 +21,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -56,21 +56,10 @@ public class LoginPresenter extends LoginContract.Presenter {
     @Override
     public void downFile(String fileUrl) {
         if (!TextUtils.isEmpty(fileUrl)) {
-            addDisposables(mModel.downFile(fileUrl).subscribeWith(new CommonSubscriber<Progress>() {
+            mView.onDownFile("文件下载中....");
+            addDisposables(mModel.downFile(fileUrl).subscribe(new Consumer<Progress>() {
                 @Override
-                protected void doOnStart() {
-                    mView.onDownFile("文件下载中....");
-                }
-
-                @Override
-                protected void doOnError(ResponeThrowable responeThrowable) {
-                    mView.onDownFileError(responeThrowable.message);
-                    dispose();
-                }
-
-                @Override
-                public void onNext(Progress progress) {
-                    super.onNext(progress);
+                public void accept(@NonNull Progress progress) throws Exception {
                     String downloadLength = Formatter.formatFileSize(mContext, progress.currentSize);
                     String totalLength = Formatter.formatFileSize(mContext, progress.totalSize);
                     String speed = Formatter.formatFileSize(mContext, progress.speed);
@@ -78,10 +67,15 @@ public class LoginPresenter extends LoginContract.Presenter {
                     Log.d(TAG, msg);
                     mView.onDownFile(msg);
                 }
-
+            }, new Consumer<Throwable>() {
                 @Override
-                public void onComplete() {
-                    super.onComplete();
+                public void accept(@NonNull Throwable throwable) throws Exception {
+                    ResponeThrowable responeThrowable = ExceptionHandle.handleException(throwable);
+                    mView.onDownFileError(responeThrowable.message);
+                }
+            }, new Action() {
+                @Override
+                public void run() throws Exception {
                     mView.onDownFileSuccess("文件下载完成");
                 }
             }));
